@@ -29,6 +29,34 @@ void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
     return copy_dest;    
 }
 
+// 4 function ++
+void *s21_memmove(void *dest, const void *src, s21_size_t n) {
+    unsigned char* copy_dest = dest;
+    const unsigned char* copy_src = src;
+    s21_size_t index = 0;
+    unsigned char* pointer = copy_dest;
+
+    int size_arr = 0;
+    for (;copy_src[size_arr] != '\0'; size_arr++);
+
+    unsigned char temp_arr[size_arr];
+
+    for (int i = 0; (temp_arr[i] = *copy_src++) != '\0'; i++);
+    for (;index < n && (*pointer++ = temp_arr[index]) != '\0'; index++);
+    return copy_dest;
+}
+
+// 5 function ++
+void *s21_memset(void *str, int c, s21_size_t n) {
+     unsigned char* copy_str = str;
+     s21_size_t check = 0;
+
+     for (; check < n && *(copy_str+check) != '\0'; check++) {
+         *(copy_str+check) = c;
+     }
+     return copy_str;
+}
+
 // 6 function  ++
 char *s21_strcat(char *dest, const char *src) {
     s21_size_t lendest = s21_strlen(dest);
@@ -77,6 +105,13 @@ char *s21_strcpy(char *dest, const char *src) {
     while ((*pointer++ = *src++) != '\0');
     return dest;
 }
+
+// 12 function  --
+/*char *s21_strncpy(char *dest, const char *src, s21_size_t n) {
+    char* pointer = dest;
+    while ((*pointer++ = *src++) != '\0');
+    return dest;
+}*/
 
 // 15 function  ++
 s21_size_t s21_strlen(const char *str) {
