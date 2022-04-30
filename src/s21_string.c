@@ -9,11 +9,28 @@ char *s21_strcat(char *dest, const char *src) {
     return dest;
 }
 
+// 7 function
+char *s21_strncat(char *dest, const char *src, s21_size_t n) {
+    s21_size_t lendest = s21_strlen(dest);
+    s21_size_t shift = 0;
+
+    while ((*(dest + lendest + shift++) = *src++) && (*src != '\0') && n-- && n != 0);
+    return dest;
+}
+
 // 9 function
 int s21_strcmp(const char* str1, const char* str2) {
     int shift = 0;
 
     for(; *(str1+shift) == *(str2+shift); shift++);
+    return *(str1+shift)-*(str2+shift);
+}
+
+// 10 function
+int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
+    int shift = 0;
+    
+    for(int i = 0; i < n && *(str1+shift) == *(str2+shift); i++ && shift++);
     return *(str1+shift)-*(str2+shift);
 }
 
