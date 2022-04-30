@@ -1,6 +1,6 @@
 #include "s21_string.h"
 
-// 6 function
+// 6 function  ++
 char *s21_strcat(char *dest, const char *src) {
     s21_size_t lendest = s21_strlen(dest);
     s21_size_t shift = 0;
@@ -9,16 +9,17 @@ char *s21_strcat(char *dest, const char *src) {
     return dest;
 }
 
-// 7 function
+// 7 function  ++
 char *s21_strncat(char *dest, const char *src, s21_size_t n) {
     s21_size_t lendest = s21_strlen(dest);
     s21_size_t shift = 0;
-
+    if (n == 0)
+        return dest;
     while ((*(dest + lendest + shift++) = *src++) && (*src != '\0') && n-- && n != 0);
     return dest;
 }
 
-// 8 function
+// 8 function  ++
 char *s21_strchr(const char *str, int c) {
     int index = 0;
     while (str[index] && str[index] != c)
@@ -27,35 +28,35 @@ char *s21_strchr(const char *str, int c) {
 }
 
 
-// 9 function
+// 9 function  ++
 int s21_strcmp(const char* str1, const char* str2) {
     int shift = 0;
-    for(; *(str1+shift) == *(str2+shift); shift++);
-    return *(str1+shift)-*(str2+shift);
+    for(; *(str1 + shift) == *(str2 + shift); shift++);
+    return *(str1 + shift) - *(str2 + shift);
 }
 
-// 10 function
+// 10 function ++
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     int shift = 0;
-    for(int i = 0; i < n && *(str1+shift) == *(str2+shift); i++ && shift++);
-    return *(str1+shift)-*(str2+shift);
+    for(int i = 0; i < n && *(str1 + shift) == *(str2 + shift) && (*(str1 + shift) || *(str2 + shift)) != '\0'; i++ && shift++);
+    return *(str1 + shift) - *(str2 + shift);
 }
 
-// 11 function
+// 11 function  ++
 char *s21_strcpy(char *dest, const char *src) {
     char* pointer = dest;
     while ((*pointer++ = *src++) != '\0');
     return dest;
 }
 
-// 15 function
+// 15 function  ++
 s21_size_t s21_strlen(const char *str) {
     s21_size_t len = 0;
     for(; str[len]; len++);
     return len;
 } 
 
-//17 function
+//17 function  ++
 char *s21_strrchr(const char *str, int c) {
     int k;
     int index = 0;
@@ -63,11 +64,13 @@ char *s21_strrchr(const char *str, int c) {
         if (str[index] == c)
             k = index;
         index++;
-  }
+    }
+    if (str[index] == '\0' && c == '\0')
+        return (char*)str + index;
     return c == str[k] ? (char*)str + k : S21_NULL;
 }
 
-// 19 function
+// 19 function  ++
 char *s21_strstr(const char *haystack, const char *needle) {
     const char *temp, *c;
     temp = needle;
@@ -84,7 +87,7 @@ char *s21_strstr(const char *haystack, const char *needle) {
     return S21_NULL;
 }
 
-// 20 function
+// 20 function  --
 char *s21_strtok(char *str, char *delim) {
     static char *last = 0;
     if (str)
