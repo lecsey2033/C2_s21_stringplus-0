@@ -1,5 +1,34 @@
 #include "s21_string.h"
 
+// 1 function  ++
+void *s21_memchr(const void *str, int c, s21_size_t n) {
+    const unsigned char* copy_str;
+    copy_str = str;
+    s21_size_t index = 0;
+    for (; index < n && *(copy_str+index) != c; index++);
+    return c == *(copy_str+index) ? (unsigned char*) copy_str + index : S21_NULL;
+}
+
+// 2 fuction  ++
+int s21_memcmp(const void *str1, const void *str2, s21_size_t n) {
+    const unsigned char* copy_str1 = str1;
+    const unsigned char* copy_str2 = str2;
+    s21_size_t shift = 0;
+    for(;shift < n && *(copy_str1 + shift) == *(copy_str2 + shift) && (*(copy_str1 + shift) || *(copy_str2 + shift)) != '\0'; shift++);
+    return *(copy_str1 + shift) - *(copy_str2 + shift);
+}
+
+// 3 function ++
+void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
+    unsigned char* copy_dest = dest;
+    const unsigned char* copy_src = src;
+    s21_size_t index = 1;
+    unsigned char* pointer = copy_dest;
+
+    for (;(*pointer++ = *copy_src++) != '\0' && index < n; index++);
+    return copy_dest;    
+}
+
 // 6 function  ++
 char *s21_strcat(char *dest, const char *src) {
     s21_size_t lendest = s21_strlen(dest);
@@ -37,8 +66,8 @@ int s21_strcmp(const char* str1, const char* str2) {
 
 // 10 function ++
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
-    int shift = 0;
-    for(int i = 0; i < n && *(str1 + shift) == *(str2 + shift) && (*(str1 + shift) || *(str2 + shift)) != '\0'; i++ && shift++);
+    s21_size_t shift = 0;
+    for(;shift < n && *(str1 + shift) == *(str2 + shift) && (*(str1 + shift) || *(str2 + shift)) != '\0'; shift++);
     return *(str1 + shift) - *(str2 + shift);
 }
 
@@ -56,7 +85,7 @@ s21_size_t s21_strlen(const char *str) {
     return len;
 } 
 
-//17 function  ++
+// 17 function  ++
 char *s21_strrchr(const char *str, int c) {
     int k;
     int index = 0;
