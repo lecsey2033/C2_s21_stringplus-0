@@ -18,6 +18,18 @@ char *s21_strncat(char *dest, const char *src, s21_size_t n) {
     return dest;
 }
 
+// 8 function
+char *s21_strchr(const char *str, int c) {
+  int index = 0;
+  while (str[index] != '\0') {
+    if (str[index] == c)
+      return &str[index];
+    index++;
+  }
+  return NULL;
+}
+
+
 // 9 function
 int s21_strcmp(const char* str1, const char* str2) {
     int shift = 0;
@@ -50,3 +62,57 @@ s21_size_t s21_strlen(const char *str) {
     return len;
 } 
 
+//17 function
+char *s21_strrchr(const char *str, int c) {
+  char *last = NULL;
+  int index = 0;
+  while (str[index] != '\0') {
+    if (str[index] == c)
+      last = &str[index];
+    index++;
+  }
+  return last;
+}
+
+// 19 function
+char *s21_strstr(const char *haystack, const char *needle) {
+  const char *temp, *c;
+  temp = needle;
+  while (*haystack) {
+    c = haystack;
+    while (*(haystack++) == *(needle++)) {
+      if (!(*needle)) {
+        return (char*)c;
+      }
+      if ( !(*haystack) ) {
+        return NULL;
+      }
+    }
+    needle = temp;
+  }
+  return NULL;
+}
+
+// 20 function
+char *s21_strtok(char *str, char *delim) {
+  static char *last = 0;
+  if (str)
+    last = str;
+  if ((last == 0) || (*last == 0))
+    return 0;
+  char *c = last;
+  while (s21_strchr(delim, *c))
+    ++c;
+  if ( *c == 0 )
+    return 0;
+  char *start = c;
+  while (*c && (s21_strchr(delim , *c) == 0))
+    ++c;
+  if (*c == 0) {
+    last = c;
+    return start;
+  }
+  *c = 0;
+  last = c+1;
+  return start;
+}
