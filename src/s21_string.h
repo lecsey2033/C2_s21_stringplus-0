@@ -17,8 +17,11 @@ int s21_strcmp(const char* str1, const char* str2); // 9
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n); // 10
 char *s21_strcpy(char *dest, const char *src); // 11
 char *s21_strncpy(char *dest, const char *src, s21_size_t n); // 12
+s21_size_t s21_strcspn(const char *str1, const char *str2); // 13
 s21_size_t s21_strlen(const char *str); // 15
+char *s21_strpbrk(const char *str1, const char *str2); // 16
 char *s21_strrchr(const char *str, int c); // 17
+s21_size_t s21_strspn(const char *str1, const char *str2); // 18
 char *s21_strstr(const char *haystack, const char *needle); // 19
 char *s21_strtok(char *str, char *delim); // 20
 

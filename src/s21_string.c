@@ -84,7 +84,6 @@ char *s21_strchr(const char *str, int c) {
     return c == str[index] ? (char*)str + index : S21_NULL;
 }
 
-
 // 9 function  ++
 int s21_strcmp(const char* str1, const char* str2) {
     int shift = 0;
@@ -102,28 +101,57 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
 // 11 function  ++
 char *s21_strcpy(char *dest, const char *src) {
     char* pointer = dest;
+
     while ((*pointer++ = *src++) != '\0');
     return dest;
 }
 
-// 12 function  --
-/*char *s21_strncpy(char *dest, const char *src, s21_size_t n) {
-    char* pointer = dest;
-    while ((*pointer++ = *src++) != '\0');
+// 12 function  ++
+char *s21_strncpy(char *dest, const char *src, s21_size_t n) {
+    s21_size_t check = 0;
+
+    for (; check < n && *(src+check) != '\0'; check++) {
+        *(dest+check) = *(src+check);
+    }
+    for (; check < n; check++) {
+        *(dest+check) = '\0';
+    }
     return dest;
-}*/
+}
+
+// 13 function ++
+s21_size_t s21_strcspn(const char *str1, const char *str2) {
+    s21_size_t len = 0;
+
+    for (; s21_strchr(str2, *(str1 + len)) == S21_NULL; len++);
+    return len;
+}
 
 // 15 function  ++
 s21_size_t s21_strlen(const char *str) {
     s21_size_t len = 0;
+
     for(; str[len]; len++);
     return len;
 } 
+
+// 16 function  ++
+char *s21_strpbrk(const char *str1, const char *str2) {
+    const char* check = S21_NULL;
+    s21_size_t len_arr = s21_strlen(str1);
+    s21_size_t len = s21_strcspn(str1, str2);
+    
+    if (len != len_arr) {
+        check = &str1[len];
+    }
+    return (char*)check;
+}
 
 // 17 function  ++
 char *s21_strrchr(const char *str, int c) {
     int k;
     int index = 0;
+
     while (str[index]) {
         if (str[index] == c)
             k = index;
@@ -132,6 +160,14 @@ char *s21_strrchr(const char *str, int c) {
     if (str[index] == '\0' && c == '\0')
         return (char*)str + index;
     return c == str[k] ? (char*)str + k : S21_NULL;
+}
+
+// 18 function  ++
+s21_size_t s21_strspn(const char *str1, const char *str2) {
+    s21_size_t len = 0;
+
+    for (; s21_strchr(str2, *(str1+len)) != S21_NULL; len++);
+    return len;
 }
 
 // 19 function  ++
@@ -152,7 +188,7 @@ char *s21_strstr(const char *haystack, const char *needle) {
 }
 
 // 20 function  --
-char *s21_strtok(char *str, char *delim) {
+/*char *s21_strtok(char *str, char *delim) {
     static char *last = 0;
     if (str)
         last = str;
@@ -173,4 +209,4 @@ char *s21_strtok(char *str, char *delim) {
     *c = 0;
     last = c+1;
     return start;
-}
+}*/
