@@ -210,3 +210,41 @@ char *s21_strstr(const char *haystack, const char *needle) {
     last = c+1;
     return start;
 }*/
+
+// 1 bonus
+void *s21_to_upper(const char *str) {
+    char *str1;
+    if (str) {
+        s21_size_t len = s21_strlen(str);
+        for (s21_size_t index = 0; index < len; index++) {
+            str1[index] = str[index];
+            if (str1[index] >= 'a' && str1[index] <= 'z')
+                str1[index] += 'A' - 'a';
+        }
+    }
+    return (void*)str1;
+}
+
+// 2 bonus
+void *s21_to_lower(const char *str) {
+    char *str1;
+    if (str) {
+        s21_size_t len = s21_strlen(str);
+        for (s21_size_t index = 0; index < len; index++) {
+            str1[index] = str[index];
+            if (str1[index] >= 'A' && str1[index] <= 'Z')
+                str1[index] += 'a' - 'A';
+        }
+    }
+    return (void*)str1;
+}
+
+// 3 bonus
+void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
+    
+}
+
+// 4 bonus
+void *s21_trim(const char *src, const char *trim_chars) {
+    
+}
