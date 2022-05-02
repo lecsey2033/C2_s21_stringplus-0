@@ -213,38 +213,29 @@ char *s21_strstr(const char *haystack, const char *needle) {
 
 // 1 bonus
 void *s21_to_upper(const char *str) {
-    char *str1;
-    if (str) {
-        s21_size_t len = s21_strlen(str);
-        for (s21_size_t index = 0; index < len; index++) {
-            str1[index] = str[index];
-            if (str1[index] >= 'a' && str1[index] <= 'z')
-                str1[index] += 'A' - 'a';
-        }
+    char* str1;
+    int len = s21_strlen(str);
+    str1 = (char*)malloc(len * sizeof(char));
+    for (int i = 0; i < len; i++) {
+        if (str[i] >= 'a' && str[i] <= 'z')
+            str1[i] = str[i] - 32;
+        else
+            str1[i] = str[i];
     }
-    return (void*)str1;
+    return len != 0 ? str1 : S21_NULL;
 }
 
 // 2 bonus
 void *s21_to_lower(const char *str) {
-    char *str1;
-    if (str) {
-        s21_size_t len = s21_strlen(str);
-        for (s21_size_t index = 0; index < len; index++) {
-            str1[index] = str[index];
-            if (str1[index] >= 'A' && str1[index] <= 'Z')
-                str1[index] += 'a' - 'A';
-        }
+    char* str1;
+    int len = s21_strlen(str);
+    str1 = (char*)malloc(len * sizeof(char));
+    for (int i = 0; i < len; i++) {
+        if (str[i] >= 'A' && str[i] <= 'Z')
+            str1[i] = str[i] + 32;
+        else
+            str1[i] = str[i];
     }
-    return (void*)str1;
+    return len != 0 ? str1 : S21_NULL;
 }
 
-// 3 bonus
-void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
-    
-}
-
-// 4 bonus
-void *s21_trim(const char *src, const char *trim_chars) {
-    
-}

@@ -3,6 +3,8 @@
 
 #define S21_NULL ((void*)0)
 
+#include <stdlib.h>
+
 typedef unsigned long s21_size_t;
 
 void *s21_memchr(const void *str, int c, s21_size_t n); // 1
@@ -27,7 +29,5 @@ char *s21_strtok(char *str, char *delim); // 20
 
 void *s21_to_upper(const char *str); // *1
 void *s21_to_lower(const char *str); // *2
-void *s21_insert(const char *src, const char *str, s21_size_t start_index); // *3
-void *s21_trim(const char *src, const char *trim_chars); // *4
 
 #endif  //  SRC_S21_STRING_H_
