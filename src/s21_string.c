@@ -260,5 +260,35 @@ void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
 
 // 4 bonus
 void *s21_trim(const char *src, const char *trim_chars) {
-    
+    int trimCharsLen = s21_strlen(trim_chars);
+    if (trim_chars == S21_NULL || trimCharsLen == 0) {
+        trim_chars = " ";
+        trimCharsLen = 1;
+    }
+    int oldStrLen = s21_strlen(src);
+    int indexBegin = 0, indexEnd = oldStrLen - 1;
+    int flagStop = 1;
+    while (flagStop == 1) {
+        flagStop = 0;
+        for (int index = 0; index < trimCharsLen; index++)
+            if (trim_chars[index] == src[indexEnd])
+                flagStop = 1;
+        if (flagStop == 1)
+            indexEnd--;
+    }
+    flagStop = 1;
+    while (flagStop == 1) {
+        flagStop = 0;
+        for (int index = 0; index < trimCharsLen; index++)
+            if (trim_chars[index] == src[indexBegin])
+                flagStop = 1;
+        if (flagStop == 1)
+            indexBegin++;
+    }
+    int index = 0, newStrLen = indexEnd - indexBegin + 1;
+    char newStr[newStrLen];
+    for (; index < newStrLen; index++)
+        newStr[index] = src[index + indexBegin];
+    newStr[index] = '\0';
+    return (oldStrLen != 0 && newStrLen != 0) ? newStr : S21_NULL;
 }
