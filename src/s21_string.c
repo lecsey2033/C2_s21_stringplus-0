@@ -241,3 +241,24 @@ void *s21_to_lower(const char *str) {
     return len != 0 ? str1 : S21_NULL;
 }
 
+// 3 bonus
+void *s21_insert(const char *src, const char *str, s21_size_t start_index) {
+    int oldStrLen = s21_strlen(src);
+    int addedStrLen = s21_strlen(str);
+    int newStrLen = addedStrLen + oldStrLen;
+    char newStr[newStrLen];
+    int index = 0, step = 0;
+    for (; index < start_index; index++)
+        newStr[index] = src[index];
+    for (; step < addedStrLen; step++)
+        newStr[index + step] = str[step];
+    for (; index + step < newStrLen; index++)
+        newStr[index + step] = src[index];
+    newStr[index + step] = '\0';
+    return (newStrLen != 0 && start_index <= oldStrLen) ? newStr : S21_NULL;
+}
+
+// 4 bonus
+void *s21_trim(const char *src, const char *trim_chars) {
+    
+}
