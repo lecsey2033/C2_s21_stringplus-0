@@ -290,5 +290,5 @@ void *s21_trim(const char *src, const char *trim_chars) {
     for (; index < newStrLen; index++)
         newStr[index] = src[index + indexBegin];
     newStr[index] = '\0';
-    return (oldStrLen != 0 && newStrLen != 0) ? newStr : S21_NULL;
+    return oldStrLen != 0 ? newStr : S21_NULL;
 }
