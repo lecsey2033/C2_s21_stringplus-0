@@ -1,4 +1,7 @@
 #include "s21_string.h"
+#include <stdlib.h>
+#include <stdarg.h>
+
 
 // 1 function  ++
 void *s21_memchr(const void *str, int c, s21_size_t n) {
@@ -187,29 +190,35 @@ char *s21_strstr(const char *haystack, const char *needle) {
     return S21_NULL;
 }
 
-// 20 function  --
-/*char *s21_strtok(char *str, char *delim) {
-    static char *last = 0;
-    if (str)
-        last = str;
-    if ((last == 0) || (*last == 0))
-        return 0;
-    char *c = last;
-    while (s21_strchr(delim, *c))
-        c++;
-    if (*c == 0)
-        return 0;
-    char *start = c;
-    while (*c && (s21_strchr(delim , *c) == 0))
-        c++;
-    if (*c == 0) {
-        last = c;
-        return start;
+// 20 function  ++
+char *s21_strtok(char *str, const char *delim) {
+  static char *buffer = S21_NULL;
+  char *token = S21_NULL;
+  // без данной проверки производится 1 деление текста
+  if (str == S21_NULL) {
+    str = buffer;
+  }
+  if (str != S21_NULL && delim != S21_NULL) {
+// index2 чтобы его каждый раз обнулять
+  int index1 = 0, index2 = 0;
+  while (str[index1] && str[index1] != delim[index2]) {
+    index2 += 1;
+    if (delim[index2] == '\0') {
+      index1 += 1;
+      index2 = 0;
     }
-    *c = 0;
-    last = c+1;
-    return start;
-}*/
+  }
+   if (str[index1] == '\0') {
+      str[index1] = '\0';
+      buffer = S21_NULL;
+    } else {
+      str[index1] = '\0';
+      buffer = &str[index1 + 1];      
+    }
+    token = str;
+  }
+  return token;
+}
 
 // 1 bonus
 void *s21_to_upper(const char *str) {
@@ -292,3 +301,45 @@ void *s21_trim(const char *src, const char *trim_chars) {
     newStr[index] = '\0';
     return oldStrLen != 0 ? newStr : S21_NULL;
 }
+
+// struct SParameters {
+//   char flag;
+//   int width;
+//   int acc;
+//   char length;
+//   char spec;
+// } Parameters;
+
+int s21_sprintf(char *str, const char *format, ...) {
+    char* check = str;
+
+    va_list ptr;
+    va_start(ptr, format);
+    for (const char* c = format; *c; c++) {
+      if (*c == '%') {  
+        switch (*++c) {
+          case 'c': *str++ = va_arg(ptr, int);
+                    break;
+          default: break;
+        }
+      } else {
+        *str++ = *c; 
+      }
+    }
+     *str = '\0';
+    va_end(ptr);
+
+    int num_sym = 0;
+    for (; *check; check++, num_sym++);
+    return num_sym;
+}
+
+// char* set_params(const char *format) {
+//     char return_arr[10];
+//     switch (*format) {
+//         case 'c': return_arr[0] = *format;
+//                   break;
+//         default: break;
+//     }
+//     return return_arr;
+// }
