@@ -18,6 +18,7 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n); // 10
 char *s21_strcpy(char *dest, const char *src); // 11
 char *s21_strncpy(char *dest, const char *src, s21_size_t n); // 12
 s21_size_t s21_strcspn(const char *str1, const char *str2); // 13
+char* s21_strerror(int errnum); // 14
 s21_size_t s21_strlen(const char *str); // 15
 char *s21_strpbrk(const char *str1, const char *str2); // 16
 char *s21_strrchr(const char *str, int c); // 17

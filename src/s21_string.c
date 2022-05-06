@@ -130,6 +130,38 @@ s21_size_t s21_strcspn(const char *str1, const char *str2) {
     return len;
 }
 
+// 14 function ++
+char* s21_strerror(int errnum) {
+    char* arrerror[] = ARRERROR;
+    char* resnum = (char*)calloc(70, sizeof(char));
+    int max_errnum;
+
+    if (arrerror[0][0] == 'U') {
+        max_errnum = 106;
+    } else {
+        max_errnum = 133;
+    }
+    if (errnum > 0 && errnum <= max_errnum) {
+        s21_strcpy(resnum, arrerror[errnum]);
+    } else {
+        char num[15] = {0};
+        if (errnum < 0) {
+            num[0] = '-';
+            errnum *= -1;
+        }
+        s21_strcpy(resnum, "Unknown error: ");
+        int i;
+        for (i = 13; errnum != 0; errnum /= 10, i--) {
+        num[i] = errnum % 10 + '0';
+        }
+        if (num[0] == '-') {
+            resnum[15] = '-';
+        }
+        s21_strcat(resnum, num + i + 1);
+    }
+    return resnum;
+}
+
 // 15 function  ++
 s21_size_t s21_strlen(const char *str) {
     s21_size_t len = 0;
