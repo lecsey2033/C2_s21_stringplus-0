@@ -344,13 +344,53 @@ void *s21_trim(const char *src, const char *trim_chars) {
 
 int s21_sprintf(char *str, const char *format, ...) {
     char* check = str;
+    int d;
+    float f;
+    char* arr;
+    unsigned int u;
 
     va_list ptr;
     va_start(ptr, format);
     for (const char* c = format; *c; c++) {
-      if (*c == '%') {  
-        switch (*++c) {
+      if (*c == '%') { 
+        ++c;
+        if (*c == ' ') {
+          c++;
+        } 
+        switch (*c) {
           case 'c': *str++ = va_arg(ptr, int);
+                    break;
+          case 'd': d = va_arg(ptr, int);
+                    itoa(d, str, 10);
+                    for (; *str; str++) {
+                    }
+          case 'i': d = va_arg(ptr, int);
+                    itoa(d, str, 10);
+                    for (; *str; str++) {
+                    }
+                    break;
+          case 'f': f = va_arg(ptr, double);
+                    itoa(f, str, 10);
+                    for (; *str; str++) {
+                    }
+                    *str++ = '.';
+                    f = 1000000 * (f - (int)f);
+                    if (f < 0) {
+                        f *= -1;
+                    }
+                    itoa(f, str, 10);
+                    for (; *str; str++) {
+                    }
+                    break;
+          case 's': arr = va_arg(ptr, char*);
+                    for (; *arr; arr++, str++) {
+                        *str = *arr; 
+                    }
+                    break;
+          case 'u': u = va_arg(ptr, unsigned int);
+                    itoa_unsigned(u, str, 10);
+                    for (; *str; str++) {
+                    }
                     break;
           default: break;
         }
@@ -362,8 +402,61 @@ int s21_sprintf(char *str, const char *format, ...) {
     va_end(ptr);
 
     int num_sym = 0;
-    for (; *check; check++, num_sym++);
+    for (; *check; check++, num_sym++) {
+    }
     return num_sym;
+}
+
+char *itoa(int number, char *destination, int base) {
+  int count = 0;
+  int ptr = 0;
+
+  if (number < 0) {
+      ptr = number;
+      number *= -1;
+  }
+  do {
+    int digit = number % base;
+    destination[count++] = (digit > 9) ? digit - 10 +'A' : digit + '0';
+  } while ((number /= base) != 0);
+  if (ptr < 0) {
+      destination[count] = '-';
+      count++;
+  }
+  destination[count] = '\0';
+  int i;
+  for (i = 0; i < count / 2; ++i) {
+    char symbol = destination[i];
+    destination[i] = destination[count - i - 1];
+    destination[count - i - 1] = symbol;
+  }
+  return destination;
+}
+
+char *itoa_unsigned(unsigned int number, char *destination, int base) {
+  int count = 0;
+  unsigned int ptr = 0;
+
+  if (number < 0) {
+      ptr = number;
+      number *= -1;
+  }
+  do {
+    unsigned int digit = number % base;
+    destination[count++] = (digit > 9) ? digit - 10 +'A' : digit + '0';
+  } while ((number /= base) != 0);
+  if (ptr < 0) {
+      destination[count] = '-';
+      count++;
+  }
+  destination[count] = '\0';
+  int i;
+  for (i = 0; i < count / 2; ++i) {
+    char symbol = destination[i];
+    destination[i] = destination[count - i - 1];
+    destination[count - i - 1] = symbol;
+  }
+  return destination;
 }
 
 // char* set_params(const char *format) {

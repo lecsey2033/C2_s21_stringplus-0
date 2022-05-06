@@ -32,6 +32,8 @@ void *s21_insert(const char *src, const char *str, s21_size_t start_index); // *
 void *s21_trim(const char *src, const char *trim_chars); // *4
 
 int s21_sprintf(char *str, const char *format, ...);
+char *itoa(int number, char *destination, int base);
+char *itoa_unsigned(unsigned int number, char *destination, int base);
 
 #if defined __linux__
 #define ARRERROR                                                               \
