@@ -190,7 +190,7 @@ s21_size_t s21_strlen(const char *str) {
 
 // 16 function  ++
 char *s21_strpbrk(const char *str1, const char *str2) {
-  const char *check;
+  const char *check = S21_NULL;
   s21_size_t len_arr = s21_strlen(str1);
   s21_size_t len = s21_strcspn(str1, str2);
   if (len != len_arr) {
@@ -365,7 +365,7 @@ void *s21_trim(const char *src, const char *trim_chars) {
 //   char spec;
 // } Parameters;
 
-/* int s21_sprintf(char *str, const char *format, ...) {
+ int s21_sprintf(char *str, const char *format, ...) {
     char* check = str;
     int d;
     float f;
@@ -387,6 +387,7 @@ void *s21_trim(const char *src, const char *trim_chars) {
                     itoa(d, str, 10);
                     for (; *str; str++) {
                     }
+                    break;
           case 'i': d = va_arg(ptr, int);
                     itoa(d, str, 10);
                     for (; *str; str++) {
@@ -481,4 +482,4 @@ char *itoa_unsigned(unsigned int number, char *destination, int base) {
 //     }
 //     return return_arr;
 // }
-*/
+
