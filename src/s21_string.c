@@ -365,7 +365,7 @@ void *s21_trim(const char *src, const char *trim_chars) {
 //   char spec;
 // } Parameters;
 
- int s21_sprintf(char *str, const char *format, ...) {
+int s21_sprintf(char *str, const char *format, ...) {
     char* check = str;
     int d;
     float f;
