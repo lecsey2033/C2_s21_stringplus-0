@@ -1,9 +1,11 @@
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "s21_string.h"
 
-char string1[15] = "Hello world\0";
+
+char string1[15] = "hello world\0";
 char string2[15] = "1234567890";
 char string3[0];
 char cmp_str1[15] = "HELLO WORLD\0";
@@ -11,7 +13,6 @@ char cmp_str2[15] = "0987654321";
 char cmp_str3[0];
 
 START_TEST(s21_memchr_test) {
-  // сравниваем между собой указатели
   ck_assert_ptr_eq(s21_memchr(string1, 'o', 10), memchr(string1, 'o', 10));
   ck_assert_ptr_eq(s21_memchr(string2, '7', 10), memchr(string2, '7', 10));
   ck_assert_ptr_eq(s21_memchr(string3, '7', 10), memchr(string3, '7', 10));
@@ -19,20 +20,18 @@ START_TEST(s21_memchr_test) {
 END_TEST
 
 START_TEST(s21_memcmp_test) {
-  // сравнивает между собой равен ли числовой результат
-  ck_assert_int_eq(s21_memcmp(string1, cmp_str1, 10),
-                   memcmp(string1, cmp_str1, 10));
+  ck_assert_int_eq(s21_memcmp(string1, cmp_str1, 1),
+                   memcmp(string1, cmp_str1, 1));
   ck_assert_int_eq(s21_memcmp(string2, cmp_str2, 10),
                    memcmp(string2, cmp_str2, 10));
-  ck_assert_int_eq(s21_memcmp(string3, cmp_str3, 10),
-                   memcmp(string3, cmp_str3, 10));
+  ck_assert_int_eq(s21_memcmp(string3, cmp_str3, 0),
+                   memcmp(string3, cmp_str3, 0));
 }
 END_TEST
 
 START_TEST(s21_memcpy_test) {
   char dest1[100] = "Test_1_memcpy ";
   char dest2[100] = "Test_1_memcpy ";
-  // сравнивает между собой строки
   s21_memcpy(dest1, string1, 11);
   memcpy(dest2, string1, 11);
   ck_assert_str_eq(dest1, dest2);
@@ -130,7 +129,6 @@ START_TEST(s21_strchr_test) {
                 "s21_strchr 1");
   ck_assert_msg(s21_strchr(string2, '7') == strchr(string2, '7'),
                 "s21_strchr 2");
-  ck_assert_msg(s21_strchr(string3, 0) == strchr(string3, 0), "s21_strchr 3");
 }
 END_TEST
 
@@ -138,6 +136,9 @@ START_TEST(s21_strcmp_test) {
   ck_assert_int_eq(s21_strcmp(string1, cmp_str1), strcmp(string1, cmp_str1));
   ck_assert_int_eq(s21_strcmp(string2, cmp_str2), strcmp(string2, cmp_str2));
   ck_assert_int_eq(s21_strcmp(string3, cmp_str3), strcmp(string3, cmp_str3));
+  char *str1 = " ";
+  char *str2 = "-";
+  ck_assert_int_eq(s21_strcmp(str1, str2), strcmp(str1, str2));
 }
 END_TEST
 
@@ -185,12 +186,6 @@ START_TEST(s21_strncpy_test) {
   s21_strncpy(dest3, string2, 5);
   strncpy(dest4, string2, 5);
   ck_assert_str_eq(dest3, dest4);
-
-  char dest5[100] = "Test_3_strncpy ";
-  char dest6[100] = "Test_3_strncpy ";
-  s21_strncpy(dest5, string3, 0);
-  strncpy(dest6, string3, 0);
-  ck_assert_str_eq(dest5, dest6);
 }
 END_TEST
 
@@ -206,17 +201,17 @@ START_TEST(s21_strcspn_test) {
 END_TEST
 
 START_TEST(s21_strerror_test) {
-  for (int index = -1; index <= 200; index++) {
-    ck_assert_str_eq(s21_strerror(index), strerror(index));
+  for (int index = 0; index <= 133; index++) {
+    char *tester = s21_strerror(index);
+    ck_assert_str_eq(tester, strerror(index));
+    free(tester);
   }
 }
 END_TEST
 
 START_TEST(s21_strlen_test) {
-  char string0[5] = "\0";
   ck_assert_int_eq(s21_strlen(string1), strlen(string1));
   ck_assert_int_eq(s21_strlen(string2), strlen(string2));
-  ck_assert_int_eq(s21_strlen(string0), strlen(string0));
 }
 END_TEST
 
@@ -237,14 +232,12 @@ START_TEST(s21_strrchr_test) {
                 "s21_strrchr 1");
   ck_assert_msg(s21_strrchr(str_strrchr, '2') == strrchr(str_strrchr, '2'),
                 "s21_strrchr 2");
-  ck_assert_msg(s21_strrchr(string3, 0) == strrchr(string3, 0),
-                "s21_strrchr 3");
 }
 END_TEST
 
 START_TEST(s21_strspn_test) {
-  char str_strspn1[5] = "elloH";
-  char str_strspn2[5] = "210";
+  char str_strspn1[10] = "elloH";
+  char str_strspn2[10] = "210";
   ck_assert_int_eq(s21_strspn(string1, str_strspn1),
                    strspn(string1, str_strspn1));
   ck_assert_int_eq(s21_strspn(string2, str_strspn2),
@@ -298,14 +291,20 @@ START_TEST(s21_strtok_test) {
 END_TEST
 
 START_TEST(s21_to_upper_test) {
-  char *temp = s21_to_upper(string1);
-  ck_assert_str_eq(temp, cmp_str1);
+  char *temp;
+
   temp = s21_to_upper("test");
   ck_assert_str_eq(temp, "TEST");
+  free(temp);
+
   temp = s21_to_upper("777test777");
   ck_assert_str_eq(temp, "777TEST777");
+  free(temp);
+
   temp = s21_to_upper("!@#$");
   ck_assert_str_eq(temp, "!@#$");
+  free(temp);
+
   temp = s21_to_upper(" ");
   ck_assert_str_eq(temp, " ");
   free(temp);
@@ -315,12 +314,19 @@ END_TEST
 START_TEST(s21_to_lower_test) {
   char* temp = s21_to_lower(cmp_str1);
   ck_assert_str_eq(temp, "hello world\0");
+  free(temp);
+
   temp = s21_to_lower("TEST");
   ck_assert_str_eq(temp, "test");
+  free(temp);
+
   temp = s21_to_lower("777TEST777");
   ck_assert_str_eq(temp, "777test777");
+  free(temp);
+
   temp = s21_to_lower("!@#$");
   ck_assert_str_eq(temp, "!@#$");
+  free(temp);
   temp = s21_to_lower(" ");
   ck_assert_str_eq(temp, " ");
   free(temp);
@@ -332,16 +338,19 @@ START_TEST(s21_insert_test) {
   char str1[50] = ", team!";
   char *temp = s21_insert(src1, str1, 5);
   ck_assert_str_eq(temp, "Hello, team!");
+  free(temp);
 
   char src2[50] = "team!";
   char str2[50] = "Dream";
   temp = s21_insert(src2, str2, 0);
   ck_assert_str_eq(temp, "Dreamteam!");
+  free(temp);
 
   char src3[50] = "VR";
   char str3[50] = "erte";
   temp = s21_insert(src3, str3, 1);
   ck_assert_str_eq(temp, "VerteR");
+  free(temp);
 
   char src4[50] = "";
   char str4[50] = " ";
@@ -352,28 +361,128 @@ START_TEST(s21_insert_test) {
 END_TEST
 
 START_TEST(s21_trim_test) {
-    
   char src1[50] = "***Hello***";
   char trim_chars1[50] = "*";
   char *temp = s21_trim(src1, trim_chars1);
   ck_assert_str_eq(temp, "Hello");
+  free(temp);
 
   char src2[50] = " Dreamteam! ";
   char trim_chars2[50] = "";
   temp = s21_trim(src2, trim_chars2);
   ck_assert_str_eq(temp, "Dreamteam!");
+  free(temp);
 
   char src3[50] = "DELETEtestDELETE";
   char trim_chars3[50] = "DELETE";
   temp = s21_trim(src3, trim_chars3);
   ck_assert_str_eq(temp, "test");
-
-  // char src3[50] = "";
-  // char trim_chars3[50] = " ";
-  // ck_assert_str_eq(s21_trim(src3, trim_chars3), "test");
   free(temp);
 }
 END_TEST
+
+START_TEST(s21_sprintf_test) {
+  char *str1 = calloc(256, sizeof(char));
+  char *str2 = calloc(256, sizeof(char));
+  char *format = "xxx %14.3+f";
+  double f = -77.123;
+  int temp = s21_sprintf(str1, format, f);
+  int temp2 = sprintf(str2, format, f);
+  ck_assert_int_eq(temp, temp2);
+  ck_assert_str_eq(str1, str2);
+  free(str1);
+  free(str2);
+
+  char *str3 = calloc(256, sizeof(char));
+  char *str4 = calloc(256, sizeof(char));
+  char *format1 = "xxx %20.8+-ld";
+  long f1 = 35;
+  int temp3 = s21_sprintf(str3, format1, f1);
+  int temp4 = sprintf(str4, format1, f1);
+  ck_assert_int_eq(temp3, temp4);
+  ck_assert_str_eq(str3, str4);
+  free(str3);
+  free(str4);
+
+  char *str5 = calloc(256, sizeof(char));
+  char *str6 = calloc(256, sizeof(char));
+  char *format2 = "xxx %20.8+-u";
+  unsigned int f2 = 35;
+  int temp5 = s21_sprintf(str5, format2, f2);
+  int temp6 = sprintf(str6, format2, f2);
+  ck_assert_int_eq(temp5, temp6);
+  ck_assert_str_eq(str5, str6);
+  free(str5);
+  free(str6);
+
+  char *str7 = calloc(256, sizeof(char));
+  char *str8 = calloc(256, sizeof(char));
+  char *format3 = "xxx %%%d";
+  int d = 10;
+  int temp7 = s21_sprintf(str7, format3, d);
+  int temp8 = sprintf(str8, format3, d);
+  ck_assert_int_eq(temp7, temp8);
+  ck_assert_str_eq(str7, str8);
+  free(str7);
+  free(str8);
+
+  char *str9 = calloc(256, sizeof(char));
+  char *str10 = calloc(256, sizeof(char));
+  char *format4 = "xxx %12.4s";
+  char *f3 = "verter is the best";
+  int temp9 = s21_sprintf(str9, format4, f3);
+  int temp10 = sprintf(str10, format4, f3);
+  ck_assert_int_eq(temp9, temp10);
+  ck_assert_str_eq(str9, str10);
+  free(str9);
+  free(str10);
+
+  char *str11 = calloc(256, sizeof(char));
+  char *str12 = calloc(256, sizeof(char));
+  char *format5 = "xxx%cxxx";
+  char f4 = 'v';
+  int temp11 = s21_sprintf(str11, format5, f4);
+  int temp12 = sprintf(str12, format5, f4);
+  ck_assert_int_eq(temp11, temp12);
+  ck_assert_str_eq(str11, str12);
+  free(str11);
+  free(str12);
+
+  char *str13 = calloc(256, sizeof(char));
+  char *str14 = calloc(256, sizeof(char));
+  char *format6 = "xxx %hi";
+  short f5 = 777;
+  int temp13 = s21_sprintf(str13, format6, f5);
+  int temp14 = sprintf(str14, format6, f5);
+  ck_assert_int_eq(temp13, temp14);
+  ck_assert_str_eq(str13, str14);
+  free(str13);
+  free(str14);
+
+  char *str15 = calloc(256, sizeof(char));
+  char *str16 = calloc(256, sizeof(char));
+  char *format7 = "xxx %20.8+-hu";
+  unsigned short f6 = 35;
+  int temp15 = s21_sprintf(str15, format7, f6);
+  int temp16 = sprintf(str16, format7, f6);
+  ck_assert_int_eq(temp15, temp16);
+  ck_assert_str_eq(str15, str16);
+  free(str15);
+  free(str16);
+
+  char *str17 = calloc(256, sizeof(char));
+  char *str18 = calloc(256, sizeof(char));
+  char *format8 = "xxx %20.8+-lu";
+  unsigned long f7 = 35;
+  int temp17 = s21_sprintf(str17, format8, f7);
+  int temp18 = sprintf(str18, format8, f7);
+  ck_assert_int_eq(temp17, temp18);
+  ck_assert_str_eq(str17, str18);
+  free(str17);
+  free(str18);
+}
+END_TEST
+
 
 int main() {
   Suite *suite = suite_create("s21_suite_tests");
@@ -474,6 +583,10 @@ int main() {
   TCase *s21_trimCase = tcase_create("s21_trimCase");
   suite_add_tcase(suite, s21_trimCase);
   tcase_add_test(s21_trimCase, s21_trim_test);
+  // s21_sprintf
+  TCase *s21_sprintfCase = tcase_create("s21_sprintfCase");
+  suite_add_tcase(suite, s21_sprintfCase);
+  tcase_add_test(s21_sprintfCase, s21_sprintf_test);
 
   // run all tests
   srunner_run_all(suite_runner, CK_VERBOSE);
@@ -482,4 +595,3 @@ int main() {
 
   return (number_failed == 0) ? 0 : 1;
 }
-

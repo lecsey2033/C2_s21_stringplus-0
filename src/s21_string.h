@@ -2,38 +2,56 @@
 #define SRC_S21_STRING_H_
 
 #define S21_NULL ((void*)0)
-
+#include <stdarg.h>
 typedef unsigned long s21_size_t;
 
-void *s21_memchr(const void *str, int c, s21_size_t n); // 1
-int s21_memcmp(const void *str1, const void *str2, s21_size_t n); // 2
-void *s21_memcpy(void *dest, const void *src, s21_size_t n); // 3
-void *s21_memmove(void *dest, const void *src, s21_size_t n); // 4
-void *s21_memset(void *str, int c, s21_size_t n); // 5
-char *s21_strcat(char *dest, const char *src); // 6
-char *s21_strncat(char *dest, const char *src, s21_size_t n); // 7
-char *s21_strchr(const char *str, int c); // 8
-int s21_strcmp(const char* str1, const char* str2); // 9
-int s21_strncmp(const char *str1, const char *str2, s21_size_t n); // 10
-char *s21_strcpy(char *dest, const char *src); // 11
-char *s21_strncpy(char *dest, const char *src, s21_size_t n); // 12
-s21_size_t s21_strcspn(const char *str1, const char *str2); // 13
-char* s21_strerror(int errnum); // 14
-s21_size_t s21_strlen(const char *str); // 15
-char *s21_strpbrk(const char *str1, const char *str2); // 16
-char *s21_strrchr(const char *str, int c); // 17
-s21_size_t s21_strspn(const char *str1, const char *str2); // 18
-char *s21_strstr(const char *haystack, const char *needle); // 19
-char *s21_strtok(char *str, const char *delim); // 20
+void *s21_memchr(const void *str, int c, s21_size_t n);
+int s21_memcmp(const void *str1, const void *str2, s21_size_t n);
+void *s21_memcpy(void *dest, const void *src, s21_size_t n);
+void *s21_memmove(void *dest, const void *src, s21_size_t n);
+void *s21_memset(void *str, int c, s21_size_t n);
+char *s21_strcat(char *dest, const char *src);
+char *s21_strncat(char *dest, const char *src, s21_size_t n);
+char *s21_strchr(const char *str, int c);
+int s21_strcmp(const char* str1, const char* str2);
+int s21_strncmp(const char *str1, const char *str2, s21_size_t n);
+char *s21_strcpy(char *dest, const char *src);
+char *s21_strncpy(char *dest, const char *src, s21_size_t n);
+s21_size_t s21_strcspn(const char *str1, const char *str2);
+char* s21_strerror(int errnum);
+s21_size_t s21_strlen(const char *str);
+char *s21_strpbrk(const char *str1, const char *str2);
+char *s21_strrchr(const char *str, int c);
+s21_size_t s21_strspn(const char *str1, const char *str2);
+char *s21_strstr(const char *haystack, const char *needle);
+char *s21_strtok(char *str, const char *delim);
 
-void *s21_to_upper(const char *str); // *1
-void *s21_to_lower(const char *str); // *2
-void *s21_insert(const char *src, const char *str, s21_size_t start_index); // *3
-void *s21_trim(const char *src, const char *trim_chars); // *4
+void *s21_to_upper(const char *str);
+void *s21_to_lower(const char *str);
+void *s21_insert(const char *src, const char *str, s21_size_t start_index);
+void *s21_trim(const char *src, const char *trim_chars);
 
 int s21_sprintf(char *str, const char *format, ...);
-char *itoa(int number, char *destination, int base);
-char *itoa_unsigned(unsigned int number, char *destination, int base);
+int set_params(const char *format, int index, int *j);
+void get_flag(char *str);
+int get_acc(char *str);
+int get_width(char *str);
+char get_lenght(char *str);
+int get_param_string(const char *str, char *params, int index);
+char* width_string(char *str);
+void create_string(char *str, va_list *arguments);
+char* create_string_c(va_list *arguments);
+char* create_string_d(va_list *arguments);
+void clear_params();
+char *itoa(int number, int base);
+char *itoa_unsigned(unsigned int number, int base);
+char* acc_int(char *str);
+char* flags_int(char* str, char* digit);
+char* create_string_u(va_list *arguments);
+char* create_string_f(va_list *arguments);
+char* create_string_s(va_list *arguments);
+char* acc_s(char *str);
+char* dtoa(double _num);
 
 #if defined __linux__
 #define ARRERROR                                                               \
