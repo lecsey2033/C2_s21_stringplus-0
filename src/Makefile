@@ -57,10 +57,3 @@ else
 	valgrind ./test.out --leak-check=full
 endif
 	make clean
-
-tester.o: tester.c
-	$(CC) $(FLAGS) -c tester.c -o tester.o
-
-tester: tester.o s21_string.c
-	$(CC) $(FLAGS) s21_string.c tester.o -o tester
-	./tester
